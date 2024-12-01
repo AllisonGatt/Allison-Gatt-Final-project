@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charities List</title>
+    <link rel="stylesheet" href="styles.css"> 
+    <!-- button styling for list/grid view -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="charity_profile.js"></script>
+
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav>
+        <ul class="nav-bar">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="charitieslist.html">Charities</a></li>
+            <li><a href="volunteerprofile.html">Profile</a></li>
+        </ul>
+    </nav>
+
+    <h1>Local Charities</h1>
+    <!-- Buttons to choose list or grid view -->
+<div class="view-toggle">
+    <button id="listViewButton"><i class="fa fa-bars"></i> List</button>
+    <button id="gridViewButton"><i class="fa fa-th-large"></i> Grid</button>
+</div>
+
+<!-- Charities container -->
+<div id="charitiesContainer" class="grid-view">
+    <div class="row">
+        <div class="column">
+            <h2>The Lennon Center</h2>
+            <p>A Pro-Life Pregnancy Center offering free services like ultrasounds, parenting classes, pregnancy verification, and material assistance.</p>
+            <a href="charity_profile_lennon.html"><button>Learn More</button></a>
+        </div>
+        <div class="column">
+            <h2>Center for the Works of Mercy</h2>
+            <p>A Catholic charity that provides clothing, food, and healthcare services to low-income individuals.</p>
+            <a href="charity_profile_works_of_mercy.html"><button>Learn More</button></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <h2>Gleaners</h2>
+            <p>A Detroit-based charity providing nutritious food and other resources to households in need.</p>
+            <a href="charity_profile_gleaners.html"><button>Learn More</button></a>
+        </div>
+        <div class="column">
+            <h2>Right to Life of Michigan</h2>
+            <p>A charity supporting pregnant women with material needs and educational resources.</p>
+            <a href="charity_profile_right_to_life.html"><button>Learn More</button></a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
