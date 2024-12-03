@@ -1,12 +1,11 @@
-//INTEGRATING API 
+// INTEGRATING API
 
 const POLLS_CONTAINER = document.getElementById("polls-container");
 const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 const API_BASE_URL = "https://api.pollsapi.com/v1";
 
-const poll_Id_charity = "674f7528382aba0016f1d38d"
-
+const poll_Id_charity = "674f7528382aba0016f1d38d";
 
 // Function to create a poll
 async function createPoll() {
@@ -134,7 +133,6 @@ async function voteOnPoll(poll_Id_charity, optionId, identifier) {
     }
 }
 
-
 // Function to fetch all votes for a specific poll
 async function fetchVotes(poll_Id_charity) {
     try {
@@ -212,8 +210,8 @@ async function initializePoll() {
     console.log("Created poll ID:", poll_Id_charity);
     if (poll_Id_charity) {
         const pollData = await fetchPoll(poll_Id_charity);
-        console.log("Fetched poll data:", poll_Id_charity);
-        displayPoll(poll_Id_charity);
+        console.log("Fetched poll data:", pollData);
+        displayPoll(pollData);
 
         // Fetch and display votes for the created poll
         showPollVotes(poll_Id_charity);
@@ -221,7 +219,6 @@ async function initializePoll() {
         console.error("Failed to create or fetch poll.");
     }
 }
-
 
 // Initialize poll when the page loads
 window.onload = initializePoll;
