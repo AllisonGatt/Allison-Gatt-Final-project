@@ -8,10 +8,9 @@ const API_BASE_URL = "https://api.pollsapi.com/v1";
 
 // Function to create a poll
 async function createPoll() {
-    const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; // Use the correct endpoint here
+    const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; 
 
     try {
-        // Log the API Key and Endpoint for debugging
         console.log("API Key:", API_KEY);
         console.log("API Endpoint:", API_URL_Create);
 
@@ -19,7 +18,7 @@ async function createPoll() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "api-key": API_KEY, // Ensure this is defined
+                "api-key": API_KEY,
             },
             body: JSON.stringify({
                 question: "What is better to donate?",
@@ -30,7 +29,6 @@ async function createPoll() {
             })
         });
 
-        // Log the raw response for debugging
         const responseText = await response.text();
         console.log("Raw API Response:", responseText);
 
@@ -40,7 +38,6 @@ async function createPoll() {
             throw new Error(`Error creating poll: ${responseText}`);
         }
 
-        // Safely parse the response text
         let pollData;
         try {
             pollData = JSON.parse(responseText);
@@ -50,12 +47,14 @@ async function createPoll() {
         }
 
         console.log("Poll created successfully:", pollData);
-        return pollData?.data?.id; // Return the poll ID or undefined if not present
+
+        // Check if pollData has the expected structure
+        console.log("Poll Data:", pollData);
+        return pollData?.data?.id; // Safely return the poll ID
     } catch (error) {
         console.error("Error in createPoll function:", error);
     }
 }
-
 
 // Function to fetch poll data
 async function fetchPoll(pollId) {
