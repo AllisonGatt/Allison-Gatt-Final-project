@@ -11,7 +11,7 @@ async function createPoll() {
     const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; // Use the correct endpoint here
 
     try {
-        const response = await fetch(${API_URL_Create}, {
+        const response = await fetch(API_URL_Create, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
