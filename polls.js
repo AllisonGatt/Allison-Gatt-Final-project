@@ -8,8 +8,10 @@ const API_BASE_URL = "https://api.pollsapi.com/v1";
 
 // Function to create a poll
 async function createPoll() {
+    const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; // Use the correct endpoint here
+
     try {
-        const response = await fetch(`${API_BASE_URL}/create/poll`, {
+        const response = await fetch(${API_URL_Create}, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
