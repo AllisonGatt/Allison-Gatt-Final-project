@@ -25,18 +25,21 @@ async function createPoll() {
             })
         });
 
+        const responseText = await response.text(); // Get the response as text
+        console.log("Raw API Response:", responseText);
+
         if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(`Error creating poll: ${errorResponse.message}`);
+            throw new Error(`Error creating poll: ${responseText}`);
         }
 
-        const pollData = await response.json();
+        const pollData = JSON.parse(responseText); // Parse JSON only if response is valid
         console.log("Poll created:", pollData);
         return pollData.data.id; // Return the poll ID
     } catch (error) {
         console.error("Error creating poll:", error);
     }
 }
+
 
 // Function to fetch poll data
 async function fetchPoll(pollId) {
