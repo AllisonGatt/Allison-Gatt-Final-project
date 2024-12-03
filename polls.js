@@ -60,7 +60,7 @@ async function createPoll() {
 // Function to fetch poll data
 async function fetchPoll(pollId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/poll/${pollId}`, {
+        const response = await fetch(`${API_BASE_URL}/get/poll/${pollId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -82,21 +82,21 @@ async function fetchPoll(pollId) {
 
 // Function to render the poll on the page
 function displayPoll(poll) {
-    const pollContainer = document.getElementById("pollContainer"); // This is correct
+    const pollsContainer = document.getElementById("polls-container"); // This is correct
 
-    pollContainer.innerHTML = ""; // Clear previous content
+    pollsContainer.innerHTML = ""; // Clear previous content
 
     // Create poll question
     const questionElement = document.createElement("h2");
     questionElement.textContent = poll.question;
-    pollContainer.appendChild(questionElement);
+    pollsContainer.appendChild(questionElement);
 
     // Create options
     poll.options.forEach(option => {
         const optionButton = document.createElement("button");
         optionButton.textContent = option.text;
         optionButton.onclick = () => voteOnPoll(poll.id, option.id);
-        pollContainer.appendChild(optionButton);
+        pollsContainer.appendChild(optionButton);
     });
 }
 
