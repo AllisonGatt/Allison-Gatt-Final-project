@@ -1,10 +1,9 @@
 //INTEGRATING API 
 
-const API_URL = "https://api.pollsapi.com/v1";
 const POLLS_CONTAINER = document.getElementById("polls-container");
 const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
-const API_BASE_URL = "https://api.pollsapi.com";
+const API_BASE_URL = "https://api.pollsapi.com/v1";
 
 
 // Function to create a poll
