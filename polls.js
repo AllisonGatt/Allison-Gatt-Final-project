@@ -101,16 +101,19 @@ function displayPoll(poll) {
 }
 
 // Function to vote on a poll
-async function voteOnPoll(pollId, optionId) {
-    const API_VOTE_URL = "https://api.pollsapi.com/v1/create/vote"
+async function voteOnPoll(pollId, optionId, identifier) {
     try {
-        const response = await fetch(`${API_VOTE_URL}/create/vote`, {
+        const response = await fetch("https://api.pollsapi.com/v1/create/vote", {  // Updated URL
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "api-key": API_KEY
             },
-            body: JSON.stringify({ option_id: optionId })
+            body: JSON.stringify({
+                poll_id: pollId,   // Poll ID to vote on
+                option_id: optionId,  // Option ID to vote for
+                identifier: identifier  // Custom identifier for the vote
+            })
         });
 
         if (!response.ok) {
@@ -129,6 +132,7 @@ async function voteOnPoll(pollId, optionId) {
         console.error("Error voting on poll:", error);
     }
 }
+
 
 // Main function to handle poll creation and display
 async function initializePoll() {
