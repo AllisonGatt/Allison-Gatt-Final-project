@@ -5,6 +5,8 @@ const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 const API_BASE_URL = "https://api.pollsapi.com/v1";
 
+const poll_Id_charity = "674f7528382aba0016f1d38d"
+
 
 // Function to create a poll
 async function createPoll() {
@@ -57,9 +59,9 @@ async function createPoll() {
 }
 
 // Function to fetch poll data
-async function fetchPoll(pollId) {
+async function fetchPoll(poll_Id_charity) {
     try {
-        const response = await fetch(`${API_BASE_URL}/get/poll/${pollId}`, {
+        const response = await fetch(`${API_BASE_URL}/get/poll/${poll_Id_charity}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -100,7 +102,7 @@ function displayPoll(poll) {
 }
 
 // Function to vote on a poll
-async function voteOnPoll(pollId, optionId, identifier) {
+async function voteOnPoll(poll_Id_charity, optionId, identifier) {
     try {
         const response = await fetch("https://api.pollsapi.com/v1/create/vote", {  // Updated URL
             method: "POST",
@@ -109,7 +111,7 @@ async function voteOnPoll(pollId, optionId, identifier) {
                 "api-key": API_KEY
             },
             body: JSON.stringify({
-                poll_id: pollId,   // Poll ID to vote on
+                poll_id: poll_Id_charity,   // Poll ID to vote on
                 option_id: optionId,  // Option ID to vote for
                 identifier: identifier  // Custom identifier for the vote
             })
@@ -125,7 +127,7 @@ async function voteOnPoll(pollId, optionId, identifier) {
         console.log("Vote response:", voteResponse);
 
         // Refresh poll data to show updated votes
-        const updatedPoll = await fetchPoll(pollId);
+        const updatedPoll = await fetchPoll(poll_Id_charity);
         displayPoll(updatedPoll);
     } catch (error) {
         console.error("Error voting on poll:", error);
@@ -134,9 +136,9 @@ async function voteOnPoll(pollId, optionId, identifier) {
 
 
 // Function to fetch all votes for a specific poll
-async function fetchVotes(pollId) {
+async function fetchVotes(poll_Id_charity) {
     try {
-        const response = await fetch(`${API_BASE_URL}/get/votes/${pollId}?offset=0&limit=100`, {
+        const response = await fetch(`${API_BASE_URL}/get/votes/${poll_Id_charity}?offset=0&limit=100`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -199,22 +201,22 @@ function getOptionTextById(optionId) {
 }
 
 // Function to fetch and display votes
-async function showPollVotes(pollId) {
-    const votes = await fetchVotes(pollId);
+async function showPollVotes(poll_Id_charity) {
+    const votes = await fetchVotes(poll_Id_charity);
     displayVotes(votes);
 }
 
-// Call showPollVotes with the pollId to display votes after poll is created or fetched
+// Call showPollVotes with the poll_Id_charity to display votes after poll is created or fetched
 async function initializePoll() {
-    const pollId = await createPoll();
-    console.log("Created poll ID:", pollId);
-    if (pollId) {
-        const pollData = await fetchPoll(pollId);
-        console.log("Fetched poll data:", pollData);
-        displayPoll(pollData);
+    const poll_Id_charity = await createPoll();
+    console.log("Created poll ID:", poll_Id_charity);
+    if (poll_Id_charity) {
+        const pollData = await fetchPoll(poll_Id_charity);
+        console.log("Fetched poll data:", poll_Id_charity);
+        displayPoll(poll_Id_charity);
 
         // Fetch and display votes for the created poll
-        showPollVotes(pollId);
+        showPollVotes(poll_Id_charity);
     } else {
         console.error("Failed to create or fetch poll.");
     }
