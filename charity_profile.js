@@ -110,120 +110,120 @@ function gridView() {
     const POLLS_CONTAINER = document.getElementById("polls-container");
     const ERROR_MESSAGE = document.getElementById("error-message");
     const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
-
-// Base URL and API Key
-const API_URL = "https://api.pollsapi.com/v1/create/poll";
-const API_KEY = "your_actual_api_key_here"; // Replace with your actual API key
+// Base API details
+const API_BASE_URL = "https://api.pollsapi.com/v1";
+const API_KEY = "your_actual_api_key_here"; // Replace with your API key
 
 // Function to create a poll
-async function createPoll(question, options, identifier = null, data = {}) {
-    // Construct the request payload
-    const requestBody = {
-        question: question,
-        options: options.map(optionText => ({ text: optionText })), // Convert options array to API format
-        identifier: identifier,
-        data: data
-    };
-
+async function createPoll() {
     try {
-        // Make the POST request to the Polls API
-        const response = await fetch(API_URL, {
+        const response = await fetch(`${API_BASE_URL}/create/poll`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "api-key": API_KEY
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify({
+                question: "Do you enjoy using this website?",
+                options: [
+                    { text: "Yes" },
+                    { text: "No" }
+                ]
+            })
         });
 
-        // Check if the request was successful
         if (!response.ok) {
             const errorResponse = await response.json();
-            throw new Error(`Error: ${errorResponse.message}`);
+            throw new Error(`Error creating poll: ${errorResponse.message}`);
         }
 
-        // Parse the JSON response
-        const responseData = await response.json();
-
-        // Log success message and poll details
-        console.log("Poll created successfully:", responseData);
+        const pollData = await response.json();
+        console.log("Poll created:", pollData);
+        return pollData.data.id; // Return the poll ID
     } catch (error) {
         console.error("Error creating poll:", error);
     }
 }
 
-// Example usage
-createPoll(
-    "What type of volunteering do you think is most important?", // Poll question
-    ["Donating money", "Donating time", "Donating resources"], // Poll options
-);
-
-createPoll(
-    "What type of volunteering do you think you could make the greatest impact with?", // Poll question
-    ["Donating money", "Donating time", "Donating resources"], // Poll options
-);
-
-    // Function to display polls
-    function displayPolls(polls) {
-        POLLS_CONTAINER.innerHTML = ""; // Clear existing polls
-        if (polls.length === 0) {
-            POLLS_CONTAINER.innerHTML = "<p>No polls available at the moment.</p>";
-            return;
-        }
-
-        polls.forEach((poll) => {
-            const pollDiv = document.createElement("div");
-            pollDiv.classList.add("poll");
-
-            const question = document.createElement("h3");
-            question.textContent = poll.question;
-
-            const optionsList = document.createElement("ul");
-
-            poll.options.forEach((option) => {
-                const optionItem = document.createElement("li");
-
-                const optionText = document.createElement("span");
-                optionText.textContent = `${option.text} (${option.votes_count} votes)`;
-
-                const voteButton = document.createElement("button");
-                voteButton.textContent = "Vote";
-                voteButton.addEventListener("click", () => voteOnOption(option.id));
-
-                optionItem.appendChild(optionText);
-                optionItem.appendChild(voteButton);
-                optionsList.appendChild(optionItem);
-            });
-
-            pollDiv.appendChild(question);
-            pollDiv.appendChild(optionsList);
-            POLLS_CONTAINER.appendChild(pollDiv);
-        });
-    }
-
-    // Function to vote on a poll option
-    async function voteOnOption(optionId) {
-        try {
-            const response = await fetch(`${API_URL}/add/vote`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "api-key": API_KEY,
-                },
-                body: JSON.stringify({ option_id: optionId }),
-            });
-
-            if (!response.ok) {
-                throw new Error("Failed to submit vote.");
+// Function to fetch poll data
+async function fetchPoll(pollId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/poll/${pollId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "api-key": API_KEY
             }
+        });
 
-            alert("Thank you for voting!");
-            fetchPolls(); // Reload polls to reflect updated votes
-        } catch (error) {
-            console.error("Error voting:", error);
-            alert("Could not submit your vote. Please try again later.");
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`Error fetching poll: ${errorResponse.message}`);
         }
-    }
 
-    // Fetch polls on page load
-    fetchPolls();
+        const pollData = await response.json();
+        return pollData.data;
+    } catch (error) {
+        console.error("Error fetching poll:", error);
+    }
+}
+
+// Function to render the poll on the page
+function displayPoll(poll) {
+    const pollContainer = document.getElementById("pollContainer");
+    pollContainer.innerHTML = ""; // Clear previous content
+
+    // Create poll question
+    const questionElement = document.createElement("h2");
+    questionElement.textContent = poll.question;
+    pollContainer.appendChild(questionElement);
+
+    // Create options
+    poll.options.forEach(option => {
+        const optionButton = document.createElement("button");
+        optionButton.textContent = option.text;
+        optionButton.onclick = () => voteOnPoll(poll.id, option.id);
+        pollContainer.appendChild(optionButton);
+    });
+}
+
+// Function to vote on a poll
+async function voteOnPoll(pollId, optionId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/poll/${pollId}/vote`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "api-key": API_KEY
+            },
+            body: JSON.stringify({ option_id: optionId })
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`Error voting: ${errorResponse.message}`);
+        }
+
+        const voteResponse = await response.json();
+        alert("Vote submitted! Thank you.");
+        console.log("Vote response:", voteResponse);
+
+        // Refresh poll data to show updated votes
+        const updatedPoll = await fetchPoll(pollId);
+        displayPoll(updatedPoll);
+    } catch (error) {
+        console.error("Error voting on poll:", error);
+    }
+}
+
+// Main function to handle poll creation and display
+async function initializePoll() {
+    const pollId = await createPoll(); // Create the poll and get the ID
+    if (pollId) {
+        const pollData = await fetchPoll(pollId); // Fetch the poll data
+        displayPoll(pollData); // Render the poll on the page
+    }
+}
+
+// Initialize poll when the page loads
+window.onload = initializePoll;
