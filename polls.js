@@ -63,7 +63,8 @@ async function fetchPoll(pollId) {
 
 // Function to render the poll on the page
 function displayPoll(poll) {
-    const pollContainer = document.getElementById("pollContainer");
+    const pollContainer = document.getElementById("pollContainer"); // This is correct
+
     pollContainer.innerHTML = ""; // Clear previous content
 
     // Create poll question
