@@ -112,12 +112,17 @@ async function voteOnPoll(pollId, optionId) {
 
 // Main function to handle poll creation and display
 async function initializePoll() {
-    const pollId = await createPoll(); // Create the poll and get the ID
+    const pollId = await createPoll();
+    console.log("Created poll ID:", pollId);
     if (pollId) {
-        const pollData = await fetchPoll(pollId); // Fetch the poll data
-        displayPoll(pollData); // Render the poll on the page
+        const pollData = await fetchPoll(pollId);
+        console.log("Fetched poll data:", pollData);
+        displayPoll(pollData);
+    } else {
+        console.error("Failed to create or fetch poll.");
     }
 }
+
 
 // Initialize poll when the page loads
 window.onload = initializePoll;
