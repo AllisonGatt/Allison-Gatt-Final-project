@@ -11,11 +11,15 @@ async function createPoll() {
     const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; // Use the correct endpoint here
 
     try {
+        // Log the API Key and Endpoint for debugging
+        console.log("API Key:", API_KEY);
+        console.log("API Endpoint:", API_URL_Create);
+
         const response = await fetch(API_URL_Create, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "api-key": API_KEY
+                "api-key": API_KEY, // Ensure this is defined
             },
             body: JSON.stringify({
                 question: "What is better to donate?",
@@ -26,18 +30,29 @@ async function createPoll() {
             })
         });
 
-        const responseText = await response.text(); // Get the response as text
+        // Log the raw response for debugging
+        const responseText = await response.text();
         console.log("Raw API Response:", responseText);
 
         if (!response.ok) {
+            console.error("Response not OK. Status:", response.status);
+            console.error("Response Status Text:", response.statusText);
             throw new Error(`Error creating poll: ${responseText}`);
         }
 
-        const pollData = JSON.parse(responseText); // Parse JSON only if response is valid
-        console.log("Poll created:", pollData);
-        return pollData.data.id; // Return the poll ID
+        // Safely parse the response text
+        let pollData;
+        try {
+            pollData = JSON.parse(responseText);
+        } catch (parseError) {
+            console.error("Error parsing JSON response:", parseError);
+            throw new Error("Invalid JSON response from the API.");
+        }
+
+        console.log("Poll created successfully:", pollData);
+        return pollData?.data?.id; // Return the poll ID or undefined if not present
     } catch (error) {
-        console.error("Error creating poll:", error);
+        console.error("Error in createPoll function:", error);
     }
 }
 
