@@ -103,7 +103,7 @@ function displayPoll(poll) {
 // Function to vote on a poll
 async function voteOnPoll(pollId, optionId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/poll/${pollId}/vote`, {
+        const response = await fetch(`${API_BASE_URL}/create/vote`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
