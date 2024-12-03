@@ -111,26 +111,57 @@ function gridView() {
     const ERROR_MESSAGE = document.getElementById("error-message");
     const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 
-    // Function to fetch and display polls
-    async function fetchPolls() {
-        try {
-            const response = await fetch(`${API_URL}/polls`, {
-                headers: {
-                    "api-key": API_KEY, // Ensure API_KEY is securely stored
-                },
-            });
+// Base URL and API Key
+const API_URL = "https://api.pollsapi.com/v1/create/poll";
+const API_KEY = "your_actual_api_key_here"; // Replace with your actual API key
 
-            if (!response.ok) {
-                throw new Error("Failed to fetch polls.");
-            }
+// Function to create a poll
+async function createPoll(question, options, identifier = null, data = {}) {
+    // Construct the request payload
+    const requestBody = {
+        question: question,
+        options: options.map(optionText => ({ text: optionText })), // Convert options array to API format
+        identifier: identifier,
+        data: data
+    };
 
-            const polls = await response.json();
-            displayPolls(polls); // Call displayPolls with fetched data
-        } catch (error) {
-            console.error("Error fetching polls:", error);
-            ERROR_MESSAGE.textContent = "Unable to load polls. Please try again later.";
+    try {
+        // Make the POST request to the Polls API
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "api-key": API_KEY
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        // Check if the request was successful
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`Error: ${errorResponse.message}`);
         }
+
+        // Parse the JSON response
+        const responseData = await response.json();
+
+        // Log success message and poll details
+        console.log("Poll created successfully:", responseData);
+    } catch (error) {
+        console.error("Error creating poll:", error);
     }
+}
+
+// Example usage
+createPoll(
+    "What type of volunteering do you think is most important?", // Poll question
+    ["Donating money", "Donating time", "Donating resources"], // Poll options
+);
+
+createPoll(
+    "What type of volunteering do you think you could make the greatest impact with?", // Poll question
+    ["Donating money", "Donating time", "Donating resources"], // Poll options
+);
 
     // Function to display polls
     function displayPolls(polls) {
