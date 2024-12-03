@@ -1,0 +1,315 @@
+/* Gradient Background */
+body {
+  background: linear-gradient(135deg, #033c8b, #007bf7);
+  padding: 20px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Nav Bar styling */
+.nav-bar {
+  list-style-type: none;
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  background-color: #3333339f;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.nav-bar li {
+  float: left;
+}
+
+.nav-bar li a {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: "Times New Roman", Times, serif;
+  color: white;
+}
+
+/* Styling to keep website cohesive */
+header {
+  text-align: left;
+  padding: 5px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+  font-size: 30px;
+  color: #c44601;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Times New Roman", Garamond, serif;
+  color: white;
+  margin: 10px;
+  padding: 5px;
+}
+
+h2 {
+  text-align: center;
+  font-family: "Times New Roman", Times, serif;
+  color: black;
+  background-color: #8dd2dd;
+  width: 30%;
+  border-radius: 50px;
+  margin: auto;
+  padding: 15px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+p {
+  text-align: center;
+  text-shadow: 1px 1px 4px #333;
+  font-family: "Times New Roman", Times, serif;
+  color: white;
+  margin: 10px;
+  padding: 10px;
+}
+
+.linkbutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.linkbutton a {
+  display: inline-block;
+  background-color: #fcc9b5;
+  font-family: 'Times New Roman', Times, serif;
+  color: black;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin: auto; /* Centers the button within the container */
+  max-width: 200px; /* Limits the button width */
+}
+
+.linkbutton a:hover {
+  background-color: #ff8b06;
+}
+
+/* Charity List/grid view */
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Charity Title */
+.column h2 {
+  background-color: white;
+  width: auto;
+  font-size: 1.5em;
+  border: 2px solid white;
+  color: black;
+  margin-bottom: 10px;
+  border-radius: 80px;
+}
+
+/* Description Text */
+.column p {
+  font-size: 1em;
+  color: black;
+  margin-bottom: 20px;
+  text-shadow: none;
+  background-color: antiquewhite;
+  border-radius: 10px;
+}
+
+/* Learn More Button */
+.column a button {
+  background-color: #fcc9b5;
+  font-family: 'Times New Roman', Times, serif;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.column a button:hover {
+  background-color: #ff8b06;
+} 
+
+/* Volunteer Profile */
+.profile-card h2 {
+  border: none;
+  border-radius: 10px;
+  background-color: aliceblue;
+  color: black;
+  width: auto;
+  margin: auto;
+  padding: 10px;
+}
+
+.profile-card p {
+  border: 3px solid whitesmoke;
+  width: auto;
+}
+
+/*styling for second element: donate*/
+
+/* Modal styles for both Volunteer and Donation */
+.modal {
+  display: none; /* This makes the default hidden*/
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal p{
+  color: black;
+  text-shadow:none;
+  
+}
+
+.modal li {
+  background-color: #006f8a;
+  color:white;
+  padding: 20px;
+  margin: 5px;
+  border: solid 2px white;
+  border-radius: 5px;
+}
+
+.modal-content {
+  background-color: #74e8ff;
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#closeDonateModal {
+  background-color: #f45e54;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#closeDonateModal:hover {
+  background-color: #d32f2f;
+}
+
+ul {
+  text-align: left;
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Responsive Design! */
+
+/*Small screens*/
+@media (max-width: 600px) {
+  .nav-bar li {
+      float: none;
+      width: 100%;
+      text-align: center;
+  }
+
+  .column {
+      flex: 1 1 100%;
+      width: 100%;
+      padding: 15px;
+  }
+
+  .row {
+      max-width: 100%;
+      flex-direction: column;
+  }
+
+  header {
+      font-size: 24px;
+  }
+
+  h2 {
+      width: 80%;
+      font-size: 1.2em;
+  }
+
+  .linkbutton a {
+      font-size: 0.9em;
+      padding: 8px 16px;
+  }
+}
+
+/* medium screens*/
+@media (max-width: 768px) {
+  .column {
+      flex: 1 1 48%;
+      width: 48%;
+  }
+
+  .row {
+      flex-wrap: wrap;
+  }
+
+  header {
+      font-size: 26px;
+  }
+
+  h2 {
+      width: 50%;
+      font-size: 1.3em;
+  }
+
+  .linkbutton a {
+      font-size: 1em;
+      padding: 10px 18px;
+  }
+}
+
+/* Large screens*/
+@media (min-width: 1024px) {
+  .column {
+      flex: 1 1 45%;
+      width: 45%;
+  }
+
+  header {
+      font-size: 30px;
+  }
+
+  h2 {
+      width: 30%;
+      font-size: 1.5em;
+  }
+}
