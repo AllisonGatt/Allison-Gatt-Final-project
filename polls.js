@@ -133,7 +133,78 @@ async function voteOnPoll(pollId, optionId, identifier) {
 }
 
 
-// Main function to handle poll creation and display
+// Function to fetch all votes for a specific poll
+async function fetchVotes(pollId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/get/votes/${pollId}?offset=0&limit=100`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "api-key": API_KEY
+            }
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(`Error fetching votes: ${errorResponse.message}`);
+        }
+
+        const votesData = await response.json();
+        return votesData.data.docs; // Return the votes data
+    } catch (error) {
+        console.error("Error fetching votes:", error);
+    }
+}
+
+// Function to render the votes on the page
+function displayVotes(votes) {
+    const votesContainer = document.getElementById("votes-container"); // Create or get this container
+
+    // Clear previous content
+    votesContainer.innerHTML = "";
+
+    // Check if there are any votes
+    if (votes.length === 0) {
+        const noVotesMessage = document.createElement("p");
+        noVotesMessage.textContent = "No votes yet.";
+        votesContainer.appendChild(noVotesMessage);
+    } else {
+        // Render each vote
+        votes.forEach(vote => {
+            const voteElement = document.createElement("div");
+            voteElement.classList.add("vote");
+
+            const identifier = vote.identifier;
+            const optionId = vote.option_id;
+
+            // Find the corresponding option text for the option_id
+            const optionText = getOptionTextById(optionId); // This should be a function that maps option IDs to option text
+
+            voteElement.innerHTML = `<strong>${identifier}</strong> voted for <strong>${optionText}</strong>`;
+
+            votesContainer.appendChild(voteElement);
+        });
+    }
+}
+
+// Function to get the option text by ID (You should map this according to your options)
+function getOptionTextById(optionId) {
+    // Example: Hardcoded options for mapping, you can adjust based on your actual poll options
+    const options = {
+        "5f9f7b186477891e5bc646a2": "Time",
+        "5f9f7b186477891e5bc646a3": "Resources"
+    };
+
+    return options[optionId] || "Unknown Option";
+}
+
+// Function to fetch and display votes
+async function showPollVotes(pollId) {
+    const votes = await fetchVotes(pollId);
+    displayVotes(votes);
+}
+
+// Call showPollVotes with the pollId to display votes after poll is created or fetched
 async function initializePoll() {
     const pollId = await createPoll();
     console.log("Created poll ID:", pollId);
@@ -141,6 +212,9 @@ async function initializePoll() {
         const pollData = await fetchPoll(pollId);
         console.log("Fetched poll data:", pollData);
         displayPoll(pollData);
+
+        // Fetch and display votes for the created poll
+        showPollVotes(pollId);
     } else {
         console.error("Failed to create or fetch poll.");
     }
