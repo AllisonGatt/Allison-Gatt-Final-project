@@ -193,8 +193,8 @@ function displayVotes(votes) {
 function getOptionTextById(optionId) {
     // Example: Hardcoded options for mapping, you can adjust based on your actual poll options
     const options = {
-        "5f9f7b186477891e5bc646a2": "Time",
-        "5f9f7b186477891e5bc646a3": "Resources"
+        "674f7528382aba0016f1d38e": "Time",
+        "674f7528382aba0016f1d38f": "Resources"
     };
 
     return options[optionId] || "Unknown Option";
