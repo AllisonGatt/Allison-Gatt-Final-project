@@ -106,13 +106,10 @@ function gridView() {
 
 //INTEGRATING API 
 
-    const API_URL = "https://api.pollsapi.com/v1";
-    const POLLS_CONTAINER = document.getElementById("polls-container");
-    const ERROR_MESSAGE = document.getElementById("error-message");
-    const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
-// Base API details
-const API_BASE_URL = "https://api.pollsapi.com/v1";
-const API_KEY = "your_actual_api_key_here"; // Replace with your API key
+const API_URL = "https://api.pollsapi.com/v1";
+const POLLS_CONTAINER = document.getElementById("polls-container");
+const ERROR_MESSAGE = document.getElementById("error-message");
+const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 
 // Function to create a poll
 async function createPoll() {
