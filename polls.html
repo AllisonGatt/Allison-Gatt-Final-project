@@ -17,34 +17,10 @@
             <li><a href="polls.html">Polls</a></li>
         </ul>
     </nav>    
-<h1>Create a Poll</h1>
-    <form id="pollForm">
-        <label for="question">Poll Question:</label>
-        <input type="text" id="question" name="question" required>
-        <br><br>
-        <label for="option1">Option 1:</label>
-        <input type="text" id="option1" name="option1" required>
-        <br>
-        <label for="option2">Option 2:</label>
-        <input type="text" id="option2" name="option2" required>
-        <br><br>
-        <button type="submit">Create Poll</button>
-    </form>
+<body>
+    <h1>Poll</h1>
+    <div id="pollContainer"></div>
 
-    <script>
-        document.getElementById("pollForm").addEventListener("submit", async function (event) {
-            event.preventDefault(); // Prevent form submission from refreshing the page
-
-            const question = document.getElementById("question").value;
-            const options = [
-                document.getElementById("option1").value,
-                document.getElementById("option2").value
-            ];
-
-            // Call the createPoll function
-            await createPoll(question, options);
-            alert("Poll created successfully!");
-        });
-    </script>
+    <script src="poll.js"></script>
 </body>
 </html>
