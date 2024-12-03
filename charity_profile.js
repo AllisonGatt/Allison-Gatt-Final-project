@@ -124,10 +124,10 @@ async function createPoll() {
                 "api-key": API_KEY
             },
             body: JSON.stringify({
-                question: "Do you enjoy using this website?",
+                question: "What is better to donate?",
                 options: [
-                    { text: "Yes" },
-                    { text: "No" }
+                    { text: "Time" },
+                    { text: "Resources" }
                 ]
             })
         });
