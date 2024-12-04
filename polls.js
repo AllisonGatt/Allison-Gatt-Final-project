@@ -134,27 +134,32 @@ async function voteOnPoll(poll_Id_charity, optionId, identifier) {
 }
 
 // Function to fetch all votes for a specific poll
-async function fetchVotes(poll_Id_charity) {
+async function fetchPollVotes(pollId, offset = 0, limit = 25) {
+    const API_URL = `https://api.pollsapi.com/v1/get/votes/${pollId}?offset=${offset}&limit=${limit}`;
+
     try {
-        const response = await fetch(`${API_BASE_URL}/get/votes/${poll_Id_charity}?offset=0&limit=100`, {
+        const response = await fetch(API_URL, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "api-key": API_KEY
-            }
+                "api-key": API_KEY, // Replace with your API key
+            },
         });
 
         if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(`Error fetching votes: ${errorResponse.message}`);
+            throw new Error(`Error fetching votes: ${response.statusText}`);
         }
 
-        const votesData = await response.json();
-        return votesData.data.docs; // Return the votes data
+        const voteData = await response.json();
+        console.log("Fetched vote data:", voteData);
+
+        return voteData?.data; // Return the vote data object
     } catch (error) {
         console.error("Error fetching votes:", error);
+        return null;
     }
 }
+
 
 // Function to render the votes on the page
 function displayVotes(votes) {
