@@ -132,14 +132,10 @@ async function voteOnPoll(poll_Id_charity, optionId, identifier) {
     }
 }
 
-
-
 // Function to fetch all votes for a specific poll
-async function fetchPollVotes(pollId, offset = 0, limit = 25) {
-    const API_URL = `https://api.pollsapi.com/v1/get/votes/${pollId}?offset=${offset}&limit=${limit}`;
-
+async function fetchPollVotes(pollId) {
     try {
-        const response = await fetch(API_URL, {
+        const response = await fetch(`https://api.pollsapi.com/v1/get/votes/${pollId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -148,20 +144,27 @@ async function fetchPollVotes(pollId, offset = 0, limit = 25) {
         });
 
         if (!response.ok) {
-            throw new Error(`Error fetching votes: ${response.statusText}`);
+            throw new Error("Failed to fetch votes");
         }
 
-        const voteData = await response.json();
-        console.log("Fetched vote data:", voteData);
+        const votesData = await response.json();
+        const votes = votesData?.data || [];
 
-        // Return the array of votes (docs)
-        return voteData?.data?.docs || [];
+        console.log("Fetched votes:", votes);
+
+        // Ensure all vote data is valid before rendering
+        votes.forEach(vote => {
+            const user = vote.identifier || "Anonymous";
+            const optionText = getOptionTextById(vote.option_id, pollOptions) || "Unknown Option";
+
+            voteContainer.innerHTML += `
+                <p>${user} voted for ${optionText}</p>
+            `;
+        });
     } catch (error) {
         console.error("Error fetching votes:", error);
-        return [];
     }
 }
-
 
 
 const OFFSET = 0;
