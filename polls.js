@@ -144,26 +144,19 @@ function displayError(message) {
 
 // Call showPollVotes with the pollId to display votes after poll is created or fetched
 async function initializePoll() {
-    setLoadingState(); // Show loading message
-
-    const pollId = await createPoll(); // Create a poll dynamically
+    const pollId = await createPoll();
     console.log("Created poll ID:", pollId);
-
     if (pollId) {
-        const pollData = await fetchPoll(pollId); // Fetch poll data
-        if (pollData) {
-            displayPoll(pollData); // Display poll
-            showPollVotes(pollId); // Fetch and display votes
-        } else {
-            displayError("Failed to load the poll. Please try again later.");
-        }
+        const pollData = await fetchPoll(pollId);
+        console.log("Fetched poll data:", pollData);
+        displayPoll(pollData);
+
+        // Fetch and display votes for the created poll
+        showPollVotes(pollId);
     } else {
-        displayError("Failed to create a new poll. Please check back later.");
+        console.error("Failed to create or fetch poll.");
     }
 }
-
-// Initialize poll when the page loads
-window.onload = initializePoll;
 
 // Initialize poll when the page loads
 window.onload = initializePoll;
