@@ -171,6 +171,10 @@ p {
   width: auto;
 }
 
+.contact_us h2 {
+  width: 100%;
+}
+
 /*styling for second element: donate*/
 
 /* Modal styles for both Volunteer and Donation */
