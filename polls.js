@@ -5,7 +5,6 @@ const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 const API_BASE_URL = "https://api.pollsapi.com/v1";
 
-
 // Function to create a poll
 async function createPoll() {
     const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; 
@@ -47,8 +46,6 @@ async function createPoll() {
     }
 }
 
-
-
 const pollId = "674f7528382aba0016f1d38d";
 
 // Function to fetch poll data
@@ -76,7 +73,6 @@ async function fetchPoll(pollId) {
         return null; // Return null if fetch fails
     }
 }
-
 
 // Function to render the poll on the page
 function displayPoll(poll) {
@@ -125,7 +121,7 @@ async function voteOnPoll(pollId, optionId, identifier) {
         alert("Vote submitted! Thank you.");
 
         // Fetch and display updated votes
-        const updatedVotes = await fetchPollVotes(pollId);
+        const updatedVotes = await fetchVotes(pollId);
         displayVotes(updatedVotes);
     } catch (error) {
         console.error("Error voting on poll:", error);
@@ -156,38 +152,11 @@ async function fetchVotes(pollId) {
         console.log("Total Votes:", totalVotes);
         console.log("Votes on this page:", votesOnPage);
 
-        votesOnPage.forEach(vote => {
-            const user = vote.identifier || "Anonymous";
-            const optionText = getOptionTextById(vote.option_id, pollOptions) || "Unknown Option";
-
-            voteContainer.innerHTML += `
-                <p>${user} voted for ${optionText}</p>
-            `;
-        });
+        return votesOnPage; // Return votes data
     } catch (error) {
         console.error("Error fetching votes:", error);
     }
 }
-
-
-
-const OFFSET = 0;
-const LIMIT = 25;
-
-fetchPollVotes(pollId, OFFSET, LIMIT).then((voteData) => {
-    if (voteData) {
-        console.log("Total Votes:", voteData.totalDocs);
-        console.log("Votes on this page:", voteData.docs);
-
-        // Example: Display vote details
-        voteData.docs.forEach((vote) => {
-            console.log(`Vote ID: ${vote.id}, Option ID: ${vote.option_id}`);
-        });
-    } else {
-        console.log("No vote data retrieved.");
-    }
-});
-
 
 // Function to render the votes on the page
 function displayVotes(votes) {
@@ -216,29 +185,23 @@ function displayVotes(votes) {
         const voteElement = document.createElement("div");
         voteElement.classList.add("vote");
 
-        const identifier = vote.identifier;
-        const optionText = getOptionTextById(vote.option_id);
+        const identifier = vote.identifier || "Anonymous";
+        const optionText = getOptionTextById(vote.option_id, votes) || "Unknown Option";
 
         voteElement.innerHTML = `<strong>${identifier}</strong> voted for <strong>${optionText}</strong>`;
         votesContainer.appendChild(voteElement);
     });
 }
 
-
-// Function to get the option text by ID (You should map this according to your options)
-function getOptionTextById(optionId) {
-    // Example: Hardcoded options for mapping, you can adjust based on your actual poll options
-    const options = {
-        "674f7528382aba0016f1d38e": "Time",
-        "674f7528382aba0016f1d38f": "Resources"
-    };
-
-    return options[optionId] || "Unknown Option";
+// Function to get the option text by ID
+function getOptionTextById(optionId, pollOptions) {
+    const option = pollOptions.find(opt => opt.id === optionId);
+    return option ? option.text : "Unknown Option";
 }
 
 // Function to fetch and display votes
 async function showPollVotes(pollId) {
-    const votes = await fetchPollVotes(pollId);
+    const votes = await fetchVotes(pollId);
     displayVotes(votes);
 }
 
