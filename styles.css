@@ -336,7 +336,7 @@ ul {
   font-family: "Times New Roman", Times, serif;
   color: white;
   margin-bottom: 20px;
-  border-radius: none;
+  border-radius: 2px;
   background-color:darkslategray
 }
 
