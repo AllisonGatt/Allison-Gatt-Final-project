@@ -20,7 +20,7 @@ async function createPoll() {
                 question: "What do you think is best to donate?",
                 options: [
                     { text: "Time" },
-                    { text: "Resources" }
+                    { text: "Resources" },
                     { text: "money"}
                 ]
             })
