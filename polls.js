@@ -222,7 +222,7 @@ function getOptionTextById(optionId) {
 
 // Function to fetch and display votes
 async function showPollVotes(poll_Id_charity) {
-    const votes = await fetchVotes(poll_Id_charity);
+    const votes = await fetchPollVotes(poll_Id_charity);
     displayVotes(votes);
 }
 
