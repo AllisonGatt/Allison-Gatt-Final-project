@@ -323,6 +323,14 @@ ul {
     border: 2px solid white;
 }
 
+#polls-container h2{
+  text-align: center;
+  color: white;
+  padding: 10px;
+  margin: 5px;
+  border: 2px solid white;
+}
+
 #votes-container {
   background-color: #409978; 
   border: none;
