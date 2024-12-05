@@ -5,6 +5,17 @@ const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 const API_BASE_URL = "https://api.pollsapi.com/v1";
 
+function setLoadingState() {
+    POLLS_CONTAINER.innerHTML = "<p>Loading poll...</p>";
+}
+
+const ERROR_MESSAGE = document.getElementById("error-message");
+
+// Function to handle error messages
+function displayError(message) {
+    ERROR_MESSAGE.textContent = message;
+}
+
 // Function to create a poll
 async function createPoll() {
     const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; 
@@ -127,17 +138,6 @@ async function voteOnPoll(pollId, optionId, identifier) {
     } catch (error) {
         console.error("Error voting on poll:", error);
     }
-}
-
-function setLoadingState() {
-    POLLS_CONTAINER.innerHTML = "<p>Loading poll...</p>";
-}
-
-const ERROR_MESSAGE = document.getElementById("error-message");
-
-// Function to handle error messages
-function displayError(message) {
-    ERROR_MESSAGE.textContent = message;
 }
 
 
