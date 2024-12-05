@@ -173,6 +173,8 @@ p {
 
 .contact_us h2 {
   width: 100%;
+  margin: 30px;
+  padding: 20px;
 }
 
 /*styling for second element: donate*/
