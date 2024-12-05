@@ -15,10 +15,17 @@
             <li><a href="contact.html">Contact</a></li>
             <li><a href="polls.html">Polls</a></li>
         </ul>
-    </nav>    
+    </nav>
     <h1>Welcome to the Polls!</h1>
-    <div id="polls-container"></div>
-    <!-- <div id="votes-container"></div> -->
+
+    <!-- Error message display -->
+    <div id="error-message" style="color: red;"></div>
+
+    <!-- Poll container for dynamic poll question and options -->
+    <div id="polls-container">
+        <p>Loading poll...</p> <!-- Default loading state -->
+    </div>
+
     <script src="polls.js"></script>
 </body>
 </html>
