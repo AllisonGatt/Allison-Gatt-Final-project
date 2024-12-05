@@ -11,9 +11,6 @@ async function createPoll() {
     const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; 
 
     try {
-        console.log("API Key:", API_KEY);
-        console.log("API Endpoint:", API_URL_Create);
-
         const response = await fetch(API_URL_Create, {
             method: "POST",
             headers: {
@@ -29,36 +26,35 @@ async function createPoll() {
             })
         });
 
-        const responseText = await response.text();
-        console.log("Raw API Response:", responseText);
-
         if (!response.ok) {
-            console.error("Response not OK. Status:", response.status);
-            console.error("Response Status Text:", response.statusText);
-            throw new Error(`Error creating poll: ${responseText}`);
+            console.error("Failed to create poll:", response.statusText);
+            throw new Error(`Error creating poll: ${await response.text()}`);
         }
 
-        let pollData;
-        try {
-            pollData = JSON.parse(responseText);
-        } catch (parseError) {
-            console.error("Error parsing JSON response:", parseError);
-            throw new Error("Invalid JSON response from the API.");
-        }
-
+        const pollData = await response.json();
         console.log("Poll created successfully:", pollData);
 
-        // Check if pollData has the expected structure
-        console.log("Poll Data:", pollData);
-        return pollData?.data?.id; // Safely return the poll ID
+        // Ensure `pollData` contains the poll ID
+        const pollId = pollData?.data?.id;
+        if (!pollId) {
+            throw new Error("Poll ID is missing in API response.");
+        }
+
+        return pollId;
     } catch (error) {
-        console.error("Error in createPoll function:", error);
+        console.error("Error in createPoll:", error);
+        return null; // Return null to signify failure
     }
 }
+
+
+
 const poll_Id_charity = "674f7528382aba0016f1d38d";
+
 // Function to fetch poll data
 async function fetchPoll(poll_Id_charity) {
     try {
+        console.log("Fetching poll data for ID:", poll_Id_charity);
         const response = await fetch(`${API_BASE_URL}/get/poll/${poll_Id_charity}`, {
             method: "GET",
             headers: {
@@ -68,16 +64,19 @@ async function fetchPoll(poll_Id_charity) {
         });
 
         if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(`Error fetching poll: ${errorResponse.message}`);
+            console.error("Failed to fetch poll:", response.status, response.statusText);
+            throw new Error(`Error fetching poll: ${await response.text()}`);
         }
 
         const pollData = await response.json();
-        return pollData.data;
+        console.log("Fetched poll data:", pollData);
+        return pollData.data; // Ensure correct data structure
     } catch (error) {
         console.error("Error fetching poll:", error);
+        return null; // Return null if fetch fails
     }
 }
+
 
 // Function to render the poll on the page
 function displayPoll(poll) {
