@@ -334,8 +334,10 @@ ul {
 
 #polls-container h2 {
   font-family: "Times New Roman", Times, serif;
-  color: #fcc9b5;
+  color: white;
   margin-bottom: 20px;
+  border-radius: none;
+  background-color:darkslategray
 }
 
 #polls-container button {
