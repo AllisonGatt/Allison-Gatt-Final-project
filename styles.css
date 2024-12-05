@@ -29,6 +29,11 @@ body {
   color: white;
 }
 
+.nav-bar li a.active {
+  background-color: #006f8a;
+  font-weight: bold;
+}
+
 /* Styling to keep website cohesive */
 header {
   text-align: left;
@@ -314,30 +319,71 @@ ul {
   }
 }
 
-/*Polls styling*/
+/* Polls Section Styling */
 #polls-container {
-    background-color: goldenrod;
-    color: white;
-    padding: 10px;
-    margin: 5px;
-    border: 2px solid white;
-}
-
-#polls-container h2{
-  text-align: center;
+  background-color: #033c8b;
   color: white;
-  padding: 10px;
-  margin: 5px;
-  border: 2px solid white;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  width: 80%;
+  max-width: 800px;
+  text-align: center;
 }
 
-#votes-container {
-  background-color: #409978; 
+#polls-container h2 {
+  font-family: "Times New Roman", Times, serif;
+  color: #fcc9b5;
+  margin-bottom: 20px;
+}
+
+#polls-container button {
+  background-color: #fcc9b5;
+  color: black;
   border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px 5px;
+  transition: background-color 0.3s ease;
+}
+
+#polls-container button:hover {
+  background-color: #ff8b06;
+}
+
+/* Votes Container Styling */
+#votes-container {
+  background-color: #409978;
   color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  width: 80%;
+  max-width: 800px;
+}
+
+#votes-container p {
+  font-family: "Times New Roman", Times, serif;
+  color: white;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #fcc9b5;
+  border-radius: 5px;
+}
+
+/* Responsive Design for Polls Page */
+@media (max-width: 768px) {
+  #polls-container, #votes-container {
+    width: 90%;
+  }
+
+  #polls-container button {
+    font-size: 0.9em;
+    padding: 8px 16px;
+  }
 }
