@@ -99,37 +99,43 @@ function displayPoll(poll) {
 }
 
 // Function to vote on a poll
-async function voteOnPoll(poll_Id_charity, optionId, identifier) {
+async function voteOnPoll(poll_Id_charity, optionId, identifier = Math.random().toString(36).substr(2, 9)) {
     try {
-        const response = await fetch("https://api.pollsapi.com/v1/create/vote", {  // Updated URL
+        console.log("Submitting vote for:", { poll_Id_charity, optionId, identifier });
+
+        const response = await fetch(`${API_BASE_URL}/create/vote`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "api-key": API_KEY
             },
             body: JSON.stringify({
-                poll_id: poll_Id_charity,   // Poll ID to vote on
-                option_id: optionId,  // Option ID to vote for
-                identifier: identifier  // Custom identifier for the vote
+                poll_id: poll_Id_charity,
+                option_id: optionId,
+                identifier
             })
         });
 
         if (!response.ok) {
-            const errorResponse = await response.json();
-            throw new Error(`Error voting: ${errorResponse.message}`);
+            console.error("Vote failed:", response.statusText);
+            throw new Error(`Error voting: ${await response.text()}`);
         }
 
         const voteResponse = await response.json();
-        alert("Vote submitted! Thank you.");
         console.log("Vote response:", voteResponse);
 
-        // Refresh poll data to show updated votes
+        // Refresh poll data
         const updatedPoll = await fetchPoll(poll_Id_charity);
-        displayPoll(updatedPoll);
+        if (updatedPoll) {
+            displayPoll(updatedPoll);
+        } else {
+            console.error("Failed to refresh poll data after voting.");
+        }
     } catch (error) {
         console.error("Error voting on poll:", error);
     }
 }
+
 
 // Function to fetch all votes for a specific poll
 async function fetchPollVotes(pollId, offset = 0, limit = 25) {
