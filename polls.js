@@ -99,11 +99,9 @@ function displayPoll(poll) {
 }
 
 // Function to vote on a poll
-async function voteOnPoll(poll_Id_charity, optionId, identifier = Math.random().toString(36).substr(2, 9)) {
+async function voteOnPoll(poll_Id_charity, optionId, identifier) {
     try {
-        console.log("Submitting vote for:", { poll_Id_charity, optionId, identifier });
-
-        const response = await fetch(`${API_BASE_URL}/create/vote`, {
+        const response = await fetch("https://api.pollsapi.com/v1/create/vote", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -112,29 +110,28 @@ async function voteOnPoll(poll_Id_charity, optionId, identifier = Math.random().
             body: JSON.stringify({
                 poll_id: poll_Id_charity,
                 option_id: optionId,
-                identifier
+                identifier: identifier
             })
         });
 
         if (!response.ok) {
-            console.error("Vote failed:", response.statusText);
-            throw new Error(`Error voting: ${await response.text()}`);
+            const errorResponse = await response.json();
+            throw new Error(`Error voting: ${errorResponse.message}`);
         }
 
         const voteResponse = await response.json();
         console.log("Vote response:", voteResponse);
 
-        // Refresh poll data
-        const updatedPoll = await fetchPoll(poll_Id_charity);
-        if (updatedPoll) {
-            displayPoll(updatedPoll);
-        } else {
-            console.error("Failed to refresh poll data after voting.");
-        }
+        alert("Vote submitted! Thank you.");
+
+        // Fetch and display updated votes
+        const updatedVotes = await fetchPollVotes(poll_Id_charity);
+        displayVotes(updatedVotes);
     } catch (error) {
         console.error("Error voting on poll:", error);
     }
 }
+
 
 
 // Function to fetch all votes for a specific poll
@@ -146,7 +143,7 @@ async function fetchPollVotes(pollId, offset = 0, limit = 25) {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "api-key": API_KEY, // Replace with your API key
+                "api-key": API_KEY,
             },
         });
 
@@ -157,12 +154,14 @@ async function fetchPollVotes(pollId, offset = 0, limit = 25) {
         const voteData = await response.json();
         console.log("Fetched vote data:", voteData);
 
-        return voteData?.data; // Return the vote data object
+        // Return the array of votes (docs)
+        return voteData?.data?.docs || [];
     } catch (error) {
         console.error("Error fetching votes:", error);
-        return null;
+        return [];
     }
 }
+
 
 
 const OFFSET = 0;
@@ -185,34 +184,39 @@ fetchPollVotes(poll_Id_charity, OFFSET, LIMIT).then((voteData) => {
 
 // Function to render the votes on the page
 function displayVotes(votes) {
-    const votesContainer = document.getElementById("votes-container"); // Create or get this container
+    const votesContainer = document.getElementById("votes-container");
 
     // Clear previous content
     votesContainer.innerHTML = "";
 
-    // Check if there are any votes
+    // Ensure votes is an array
+    if (!Array.isArray(votes)) {
+        console.error("Votes is not an array:", votes);
+        votesContainer.textContent = "Unable to load votes.";
+        return;
+    }
+
+    // Handle no votes case
     if (votes.length === 0) {
         const noVotesMessage = document.createElement("p");
         noVotesMessage.textContent = "No votes yet.";
         votesContainer.appendChild(noVotesMessage);
-    } else {
-        // Render each vote
-        votes.forEach(vote => {
-            const voteElement = document.createElement("div");
-            voteElement.classList.add("vote");
-
-            const identifier = vote.identifier;
-            const optionId = vote.option_id;
-
-            // Find the corresponding option text for the option_id
-            const optionText = getOptionTextById(optionId); // This should be a function that maps option IDs to option text
-
-            voteElement.innerHTML = `<strong>${identifier}</strong> voted for <strong>${optionText}</strong>`;
-
-            votesContainer.appendChild(voteElement);
-        });
+        return;
     }
+
+    // Render each vote
+    votes.forEach(vote => {
+        const voteElement = document.createElement("div");
+        voteElement.classList.add("vote");
+
+        const identifier = vote.identifier;
+        const optionText = getOptionTextById(vote.option_id);
+
+        voteElement.innerHTML = `<strong>${identifier}</strong> voted for <strong>${optionText}</strong>`;
+        votesContainer.appendChild(voteElement);
+    });
 }
+
 
 // Function to get the option text by ID (You should map this according to your options)
 function getOptionTextById(optionId) {
