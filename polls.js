@@ -5,16 +5,6 @@ const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 const API_BASE_URL = "https://api.pollsapi.com/v1";
 
-function setLoadingState() {
-    POLLS_CONTAINER.innerHTML = "<p>Loading poll...</p>";
-}
-
-const ERROR_MESSAGE = document.getElementById("error-message");
-
-// Function to handle error messages
-function displayError(message) {
-    ERROR_MESSAGE.textContent = message;
-}
 
 // Function to create a poll
 async function createPoll() {
@@ -132,9 +122,6 @@ async function voteOnPoll(pollId, optionId, identifier) {
 
         alert("Vote submitted! Thank you.");
 
-        // Fetch and display updated votes
-        const updatedVotes = await fetchVotes(pollId);
-        displayVotes(updatedVotes);
     } catch (error) {
         console.error("Error voting on poll:", error);
     }
@@ -150,8 +137,6 @@ async function initializePoll() {
         console.log("Fetched poll data:", pollData);
         displayPoll(pollData);
 
-        // Fetch and display votes for the created poll
-        showPollVotes(pollId);
     } else {
         console.error("Failed to create or fetch poll.");
     }
