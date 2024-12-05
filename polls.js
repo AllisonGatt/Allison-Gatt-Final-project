@@ -141,7 +141,6 @@ function displayError(message) {
 }
 
 
-
 // Call showPollVotes with the pollId to display votes after poll is created or fetched
 async function initializePoll() {
     const pollId = await createPoll();
