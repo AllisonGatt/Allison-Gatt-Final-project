@@ -313,3 +313,23 @@ ul {
       font-size: 1.5em;
   }
 }
+
+/*Polls styling*/
+#polls-container {
+    background-color: goldenrod;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid white;
+}
+
+#votes-container {
+  background-color: #409978; 
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
