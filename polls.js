@@ -49,13 +49,13 @@ async function createPoll() {
 
 
 
-const poll_Id_charity = "674f7528382aba0016f1d38d";
+const pollId = "674f7528382aba0016f1d38d";
 
 // Function to fetch poll data
-async function fetchPoll(poll_Id_charity) {
+async function fetchPoll(pollId) {
     try {
-        console.log("Fetching poll data for ID:", poll_Id_charity);
-        const response = await fetch(`${API_BASE_URL}/get/poll/${poll_Id_charity}`, {
+        console.log("Fetching poll data for ID:", pollId);
+        const response = await fetch(`${API_BASE_URL}/get/poll/${pollId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function displayPoll(poll) {
 }
 
 // Function to vote on a poll
-async function voteOnPoll(poll_Id_charity, optionId, identifier) {
+async function voteOnPoll(pollId, optionId, identifier) {
     try {
         const response = await fetch("https://api.pollsapi.com/v1/create/vote", {
             method: "POST",
@@ -108,7 +108,7 @@ async function voteOnPoll(poll_Id_charity, optionId, identifier) {
                 "api-key": API_KEY
             },
             body: JSON.stringify({
-                poll_id: poll_Id_charity,
+                poll_id: pollId,
                 option_id: optionId,
                 identifier: identifier
             })
@@ -125,7 +125,7 @@ async function voteOnPoll(poll_Id_charity, optionId, identifier) {
         alert("Vote submitted! Thank you.");
 
         // Fetch and display updated votes
-        const updatedVotes = await fetchPollVotes(poll_Id_charity);
+        const updatedVotes = await fetchPollVotes(pollId);
         displayVotes(updatedVotes);
     } catch (error) {
         console.error("Error voting on poll:", error);
@@ -174,7 +174,7 @@ async function fetchVotes(pollId) {
 const OFFSET = 0;
 const LIMIT = 25;
 
-fetchPollVotes(poll_Id_charity, OFFSET, LIMIT).then((voteData) => {
+fetchPollVotes(pollId, OFFSET, LIMIT).then((voteData) => {
     if (voteData) {
         console.log("Total Votes:", voteData.totalDocs);
         console.log("Votes on this page:", voteData.docs);
@@ -237,22 +237,22 @@ function getOptionTextById(optionId) {
 }
 
 // Function to fetch and display votes
-async function showPollVotes(poll_Id_charity) {
-    const votes = await fetchPollVotes(poll_Id_charity);
+async function showPollVotes(pollId) {
+    const votes = await fetchPollVotes(pollId);
     displayVotes(votes);
 }
 
-// Call showPollVotes with the poll_Id_charity to display votes after poll is created or fetched
+// Call showPollVotes with the pollId to display votes after poll is created or fetched
 async function initializePoll() {
-    const poll_Id_charity = await createPoll();
-    console.log("Created poll ID:", poll_Id_charity);
-    if (poll_Id_charity) {
-        const pollData = await fetchPoll(poll_Id_charity);
+    const pollId = await createPoll();
+    console.log("Created poll ID:", pollId);
+    if (pollId) {
+        const pollData = await fetchPoll(pollId);
         console.log("Fetched poll data:", pollData);
         displayPoll(pollData);
 
         // Fetch and display votes for the created poll
-        showPollVotes(poll_Id_charity);
+        showPollVotes(pollId);
     } else {
         console.error("Failed to create or fetch poll.");
     }
