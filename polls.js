@@ -5,7 +5,6 @@ const ERROR_MESSAGE = document.getElementById("error-message");
 const API_KEY = "6PMJYJ7EZ6M486KNBGAP812KCBJ0";
 const API_BASE_URL = "https://api.pollsapi.com/v1";
 
-const poll_Id_charity = "674f7528382aba0016f1d38d";
 
 // Function to create a poll
 async function createPoll() {
@@ -56,7 +55,7 @@ async function createPoll() {
         console.error("Error in createPoll function:", error);
     }
 }
-
+const poll_Id_charity = "674f7528382aba0016f1d38d";
 // Function to fetch poll data
 async function fetchPoll(poll_Id_charity) {
     try {
@@ -159,6 +158,24 @@ async function fetchPollVotes(pollId, offset = 0, limit = 25) {
         return null;
     }
 }
+
+
+const OFFSET = 0;
+const LIMIT = 25;
+
+fetchPollVotes(poll_Id_charity, OFFSET, LIMIT).then((voteData) => {
+    if (voteData) {
+        console.log("Total Votes:", voteData.totalDocs);
+        console.log("Votes on this page:", voteData.docs);
+
+        // Example: Display vote details
+        voteData.docs.forEach((vote) => {
+            console.log(`Vote ID: ${vote.id}, Option ID: ${vote.option_id}`);
+        });
+    } else {
+        console.log("No vote data retrieved.");
+    }
+});
 
 
 // Function to render the votes on the page
