@@ -7,10 +7,30 @@ const API_BASE_URL = "https://api.pollsapi.com/v1";
 
 
 // Function to create a poll
+
+//error handling 
+function showError(message) {
+    if (ERROR_MESSAGE) {
+        ERROR_MESSAGE.textContent = message;
+        ERROR_MESSAGE.style.display = "block";
+    }
+}
+function clearError() {
+    if (ERROR_MESSAGE) {
+        ERROR_MESSAGE.textContent = "";
+        ERROR_MESSAGE.style.display = "none";
+    }
+}
+
+
+//API is Polls API from URL below 
 async function createPoll() {
     const API_URL_Create = "https://api.pollsapi.com/v1/create/poll"; 
 
     try {
+        clearError();
+
+
         const response = await fetch(API_URL_Create, {
             method: "POST",
             headers: {
@@ -44,15 +64,19 @@ async function createPoll() {
         return pollId;
     } catch (error) {
         console.error("Error in createPoll:", error);
+        showError("Sorry! Failed to create poll. Try again later.")
         return null; // Return null to signify failure
     }
 }
 
 const pollId = "674f7528382aba0016f1d38d";
 
-// Function to fetch poll data
+// This fetches the poll data by implementing the GET request
 async function fetchPoll(pollId) {
     try {
+        clearError();
+
+
         console.log("Fetching poll data for ID:", pollId);
         const response = await fetch(`${API_BASE_URL}/get/poll/${pollId}`, {
             method: "GET",
@@ -69,25 +93,26 @@ async function fetchPoll(pollId) {
 
         const pollData = await response.json();
         console.log("Fetched poll data:", pollData);
-        return pollData.data; // Ensure correct data structure
+        return pollData.data; // This ensures the correct data structure
     } catch (error) {
         console.error("Error fetching poll:", error);
+        showError("Sorry, there was an issue with loading the poll data. Please try again later!")
         return null; // Return null if fetch fails
     }
 }
 
-// Function to render the poll on the page
+// This renders the poll on the page
 function displayPoll(poll) {
     const pollsContainer = document.getElementById("polls-container"); // This is correct
 
     pollsContainer.innerHTML = ""; // Clear previous content
 
-    // Create poll question
+    // This creates the poll question
     const questionElement = document.createElement("h2");
     questionElement.textContent = poll.question;
     pollsContainer.appendChild(questionElement);
 
-    // Create options
+    // This creates options
     poll.options.forEach(option => {
         const optionButton = document.createElement("button");
         optionButton.textContent = option.text;
@@ -96,9 +121,12 @@ function displayPoll(poll) {
     });
 }
 
-// Function to vote on a poll
+// This is the function to vote on a poll
 async function voteOnPoll(pollId, optionId, identifier) {
     try {
+        clearError();
+
+
         const response = await fetch("https://api.pollsapi.com/v1/create/vote", {
             method: "POST",
             headers: {
@@ -124,6 +152,7 @@ async function voteOnPoll(pollId, optionId, identifier) {
 
     } catch (error) {
         console.error("Error voting on poll:", error);
+        showError("Sorry, your vote failed to submit. Please try again later!")
     }
 }
 
